@@ -1,6 +1,7 @@
 using CoreMesh.Dispatching.Abstractions;
 using CoreMesh.Validation.Abstractions;
 using CoreMesh.Validation.Abstractions.Extensions;
+using Domain.Common;
 using Domain.Posts;
 
 namespace Application.Posts.Commands;
@@ -15,7 +16,7 @@ public sealed record UpdatePostCommand(Guid PostId, string Title, string Content
     }
 }
 
-public sealed class UpdatePostHandler(IPostRepository repository)
+public sealed class UpdatePostHandler(IPostRepository repository, IUnitOfWork unitOfWork)
     : IRequestHandler<UpdatePostCommand>
 {
     public async Task Handle(UpdatePostCommand request, CancellationToken cancellationToken = default)
@@ -26,5 +27,7 @@ public sealed class UpdatePostHandler(IPostRepository repository)
 
         post.Update(request.Title, request.Content);
         repository.Update(post);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

@@ -1,12 +1,13 @@
 using CoreMesh.Dispatching.Abstractions;
 using CoreMesh.Outbox.Abstractions;
+using Domain.Common;
 using Domain.Posts;
 
 namespace Application.Posts.Commands;
 
 public sealed record PublishPostCommand(Guid PostId) : IRequest;
 
-public sealed class PublishPostHandler(IPostRepository repository, IOutboxWriter outboxWriter)
+public sealed class PublishPostHandler(IPostRepository repository, IOutboxWriter outboxWriter, IUnitOfWork unitOfWork)
     : IRequestHandler<PublishPostCommand>
 {
     public async Task Handle(PublishPostCommand request, CancellationToken cancellationToken = default)
@@ -20,5 +21,7 @@ public sealed class PublishPostHandler(IPostRepository repository, IOutboxWriter
 
         foreach (var domainEvent in post.PopDomainEvents())
             await outboxWriter.AddAsync(domainEvent, cancellationToken);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

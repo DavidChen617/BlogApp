@@ -1,10 +1,11 @@
 using CoreMesh.Outbox.Abstractions;
+using Domain.Common;
 using Domain.Posts;
 using Domain.Posts.Events;
 
 namespace Application.EventHandlers;
 
-public sealed class AuthorNameChangedEventHandler(IPostRepository postRepository) : IEventHandler<AuthorNameChangedEvent>
+public sealed class AuthorNameChangedEventHandler(IPostRepository postRepository, IUnitOfWork unitOfWork) : IEventHandler<AuthorNameChangedEvent>
 {
     public async Task HandleAsync(AuthorNameChangedEvent @event, CancellationToken cancellationToken = default)
     {
@@ -14,5 +15,6 @@ public sealed class AuthorNameChangedEventHandler(IPostRepository postRepository
             post.UpdateAuthorName(@event.NewAuthorName);
             postRepository.Update(post);
         }
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

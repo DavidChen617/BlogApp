@@ -2,6 +2,7 @@ using CoreMesh.Dispatching.Abstractions;
 using CoreMesh.Validation.Abstractions;
 using CoreMesh.Validation.Abstractions.Extensions;
 using Domain.Comments;
+using Domain.Common;
 using Domain.Posts;
 
 namespace Application.Comments.Commands;
@@ -15,7 +16,7 @@ public sealed record CreateCommentCommand(Guid PostId, Guid AuthorId, string Bod
     }
 }
 
-public sealed class CreateCommentHandler(IPostRepository postRepository, ICommentRepository commentRepository)
+public sealed class CreateCommentHandler(IPostRepository postRepository, ICommentRepository commentRepository, IUnitOfWork unitOfWork)
     : IRequestHandler<CreateCommentCommand>
 {
     public async Task Handle(CreateCommentCommand request, CancellationToken cancellationToken = default)
@@ -29,5 +30,7 @@ public sealed class CreateCommentHandler(IPostRepository postRepository, ICommen
 
         var comment = Comment.Create(postId, request.AuthorId, request.Body);
         commentRepository.Add(comment);
+
+        await unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }
