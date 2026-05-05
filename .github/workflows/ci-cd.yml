@@ -1,10 +1,17 @@
-name: CI
+name: CI/CD
 
 on:
   push:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy after validation
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   build-and-test:
@@ -29,14 +36,6 @@ jobs:
       - name: Test Domain
         run: dotnet test tests/Domain.Tests/Domain.Tests.csproj -c Release
 
-  docker:
-    name: Docker Validation
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Validate Compose File
         run: docker compose config
 
@@ -45,3 +44,19 @@ jobs:
 
       - name: Build Migration Image
         run: docker build -f Migration.Dockerfile .
+
+  deploy:
+    name: Deploy
+    runs-on: [self-hosted, linux, x64]
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' && inputs.deploy
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show Docker info
+        run: docker version
+
+      - name: Deploy with Compose
+        run: docker compose up -d --build --remove-orphans
