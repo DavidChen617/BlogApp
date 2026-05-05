@@ -12,6 +12,7 @@ public sealed class BlogDbContextFactory : IDesignTimeDbContextFactory<BlogDbCon
             .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../Api"))
             .AddJsonFile("appsettings.json", optional: false)
             .AddJsonFile("appsettings.Development.json", optional: true)
+            .AddEnvironmentVariables()
             .Build();
 
         var optionsBuilder = new DbContextOptionsBuilder<BlogDbContext>();
