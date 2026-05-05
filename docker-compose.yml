@@ -48,8 +48,12 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
     environment:
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=blogapp;Username=postgres;Password=postgres"
+      Kafka__BootstrapServers: "kafka:9092"
+      Kafka__GroupId: "blog-api"
 
   api:
     build:
