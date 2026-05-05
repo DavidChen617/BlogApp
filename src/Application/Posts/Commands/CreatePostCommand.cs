@@ -8,7 +8,11 @@ using Domain.Posts;
 namespace Application.Posts.Commands;
 
 public sealed record CreatePostCommand(string Title, string Content, Guid AuthorId, string AuthorName)
-    : IRequest, IValidatable<CreatePostCommand>
+    : IRequest
+{
+}
+
+public sealed class CreatePostCommandValidator : IValidatable<CreatePostCommand>
 {
     public void ConfigureValidateRules(IValidationBuilder<CreatePostCommand> builder)
     {

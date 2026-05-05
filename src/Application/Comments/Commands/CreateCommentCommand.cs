@@ -8,7 +8,11 @@ using Domain.Posts;
 namespace Application.Comments.Commands;
 
 public sealed record CreateCommentCommand(Guid PostId, Guid AuthorId, string Body)
-    : IRequest, IValidatable<CreateCommentCommand>
+    : IRequest
+{
+}
+
+public sealed class CreateCommentCommandValidator : IValidatable<CreateCommentCommand>
 {
     public void ConfigureValidateRules(IValidationBuilder<CreateCommentCommand> builder)
     {

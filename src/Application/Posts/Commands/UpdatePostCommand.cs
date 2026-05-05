@@ -7,7 +7,11 @@ using Domain.Posts;
 namespace Application.Posts.Commands;
 
 public sealed record UpdatePostCommand(Guid PostId, string Title, string Content)
-    : IRequest, IValidatable<UpdatePostCommand>
+    : IRequest
+{
+}
+
+public sealed class UpdatePostCommandValidator : IValidatable<UpdatePostCommand>
 {
     public void ConfigureValidateRules(IValidationBuilder<UpdatePostCommand> builder)
     {
