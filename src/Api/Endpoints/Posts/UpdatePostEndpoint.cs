@@ -14,7 +14,7 @@ public sealed class UpdatePostEndpoint : IGroupedEndpoint<PostsGroup>
         group.MapPut("/{id:guid}", async (
             Guid id,
             UpdatePostRequest body,
-            ISender sender,
+            IDispatcher dispatcher,
             IValidator validator,
             CancellationToken ct) =>
         {
@@ -23,7 +23,7 @@ public sealed class UpdatePostEndpoint : IGroupedEndpoint<PostsGroup>
             if (!result.IsValid)
                 return Results.ValidationProblem(result.Errors.ToDictionary(e => e.Key, e => e.Value.ToArray()));
 
-            await sender.Send(command, ct);
+            await dispatcher.Send(command, ct);
             return Results.NoContent();
         });
     }

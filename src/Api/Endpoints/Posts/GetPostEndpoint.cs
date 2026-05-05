@@ -10,10 +10,10 @@ public sealed class GetPostEndpoint : IGroupedEndpoint<PostsGroup>
     {
         group.MapGet("/{id:guid}", async (
             Guid id,
-            ISender sender,
+            IDispatcher dispatcher,
             CancellationToken ct) =>
         {
-            var post = await sender.Send(new GetPostByIdQuery(id), ct);
+            var post = await dispatcher.Send(new GetPostByIdQuery(id), ct);
             return Results.Ok(post);
         });
     }

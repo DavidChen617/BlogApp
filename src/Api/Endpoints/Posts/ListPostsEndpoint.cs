@@ -9,12 +9,12 @@ public sealed class ListPostsEndpoint : IGroupedEndpoint<PostsGroup>
     public void AddRoute(RouteGroupBuilder group)
     {
         group.MapGet("/", async (
-            ISender sender,
+            IDispatcher dispatcher,
             CancellationToken ct,
             int page = 1,
             int pageSize = 20) =>
         {
-            var result = await sender.Send(new GetPostsQuery(page, pageSize), ct);
+            var result = await dispatcher.Send(new GetPostsQuery(page, pageSize), ct);
             return Results.Ok(result);
         });
     }

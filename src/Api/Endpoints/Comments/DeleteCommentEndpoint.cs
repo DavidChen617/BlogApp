@@ -10,10 +10,10 @@ public sealed class DeleteCommentEndpoint : IGroupedEndpoint<CommentsGroup>
     {
         group.MapDelete("/{id:guid}", async (
             Guid id,
-            ISender sender,
+            IDispatcher dispatcher,
             CancellationToken ct) =>
         {
-            await sender.Send(new DeleteCommentCommand(id), ct);
+            await dispatcher.Send(new DeleteCommentCommand(id), ct);
             return Results.NoContent();
         });
     }

@@ -10,10 +10,10 @@ public sealed class PublishPostEndpoint : IGroupedEndpoint<PostsGroup>
     {
         group.MapPost("/{id:guid}/publish", async (
             Guid id,
-            ISender sender,
+            IDispatcher dispatcher,
             CancellationToken ct) =>
         {
-            await sender.Send(new PublishPostCommand(id), ct);
+            await dispatcher.Send(new PublishPostCommand(id), ct);
             return Results.NoContent();
         });
     }

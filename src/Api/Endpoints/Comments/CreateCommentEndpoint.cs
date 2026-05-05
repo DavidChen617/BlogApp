@@ -11,7 +11,7 @@ public sealed class CreateCommentEndpoint : IGroupedEndpoint<CommentsGroup>
     {
         group.MapPost("/", async (
             CreateCommentCommand command,
-            ISender sender,
+            IDispatcher dispatcher,
             IValidator validator,
             CancellationToken ct) =>
         {
@@ -19,7 +19,7 @@ public sealed class CreateCommentEndpoint : IGroupedEndpoint<CommentsGroup>
             if (!result.IsValid)
                 return Results.ValidationProblem(result.Errors.ToDictionary(e => e.Key, e => e.Value.ToArray()));
 
-            await sender.Send(command, ct);
+            await dispatcher.Send(command, ct);
             return Results.Created();
         });
     }

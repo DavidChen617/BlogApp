@@ -10,10 +10,10 @@ public sealed class DeletePostEndpoint : IGroupedEndpoint<PostsGroup>
     {
         group.MapDelete("/{id:guid}", async (
             Guid id,
-            ISender sender,
+            IDispatcher dispatcher,
             CancellationToken ct) =>
         {
-            await sender.Send(new DeletePostCommand(id), ct);
+            await dispatcher.Send(new DeletePostCommand(id), ct);
             return Results.NoContent();
         });
     }
