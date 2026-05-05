@@ -5,8 +5,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CoreMesh.Dispatching" Version="1.1.2" />
     <PackageReference Include="CoreMesh.Dispatching.Abstractions" Version="1.1.0" />
     <PackageReference Include="CoreMesh.Outbox.Abstractions" Version="0.1.0" />
+    <PackageReference Include="CoreMesh.Validation" Version="0.2.1" />
     <PackageReference Include="CoreMesh.Validation.Abstractions" Version="0.2.0" />
   </ItemGroup>
 

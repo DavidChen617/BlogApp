@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(openspec status *)",
+      "Bash(openspec instructions *)",
+      "Read(//Users/chendavid/workspace/project/CoreMesh/src/Outbox.Abstractions/**)",
+      "Read(//Users/chendavid/workspace/project/CoreMesh/src/Dispatching.Abstractions/**)",
+      "Read(//Users/chendavid/workspace/project/CoreMesh/src/Validation.Abstractions/**)",
+      "Bash(dotnet build *)",
+      "Bash(dotnet test *)",
+      "Bash(git add *)",
+      "Bash(openspec new *)",
+      "Bash(dotnet add *)"
+    ]
+  }
+}
