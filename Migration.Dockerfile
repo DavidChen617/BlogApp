@@ -17,4 +17,4 @@ RUN dotnet tool install --global dotnet-ef --version 10.0.7
 ENV PATH="$PATH:/root/.dotnet/tools"
 
 WORKDIR /app/src/Infrastructure
-ENTRYPOINT ["dotnet", "ef", "database", "update", "--startup-project", "../Api", "--no-build"]
+ENTRYPOINT ["dotnet", "ef", "database", "update", "--startup-project", "../Api", "--configuration", "Release", "--no-build"]
